@@ -14,12 +14,12 @@ api.SetCache(None) # Caching needs to be turned off
 def delete_tweet(status_id):
     """Deletes tweet with matching status_id"""
     api.DestroyStatus(status_id)
-    print "Deleted: " + str(status_id)
+    print "Deleted:", str(status_id)
 
 batch = 0
 while True: # Rinse and repeat
     batch += 1
-    print "\nProcessing batch " + str(batch)
+    print "\nProcessing batch ", str(batch)
     tweets = api.GetUserTimeline(username, count=count) # Get batch of tweets
     if not tweets: break # Exit if there aren't any tweets left
     [delete_tweet(tweet.id) for tweet in tweets] # Delete tweets in batch
