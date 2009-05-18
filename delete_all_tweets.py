@@ -1,4 +1,6 @@
-# This script will delete all of the tweets in a specified account
+# This script will delete all of the tweets in the specified account.
+# You may need to hit the more button every now and then as the script runs
+# this is due to a bug in twitter.com
 
 import twitter # Requires python-twitter library
 
