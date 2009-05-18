@@ -16,12 +16,12 @@ def delete_tweet(status_id):
     api.DestroyStatus(status_id)
     print "Deleted: " + str(status_id)
 
-batch = 0 # initialise batch counter
+batch = 0
 while True: # Rinse and repeat
-    batch += 1 # Increment batch counter
+    batch += 1
     print "\nProcessing batch " + str(batch)
     tweets = api.GetUserTimeline(username, count=count) # Get batch of tweets
     if not tweets: break # Exit if there aren't any tweets left
-    [delete_tweet(tweet.id) for tweet in tweets] # Delete tweets in this batch
+    [delete_tweet(tweet.id) for tweet in tweets] # Delete tweets in batch
    
 print "\nDone"
