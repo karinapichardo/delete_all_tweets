@@ -1,6 +1,6 @@
 # This script will delete all of the tweets in a specified account
 
-import twitter
+import twitter # Requires python-twitter library
 
 username = 'your_username'
 password = 'your_password'
