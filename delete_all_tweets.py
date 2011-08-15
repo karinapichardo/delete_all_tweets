@@ -1,37 +1,43 @@
 # -*- coding: utf-8 -*-
 """
-@requirements: python-twitter (http://code.google.com/p/python-twitter/) and simplejson (http://code.google.com/p/simplejson/)
-@author: Dave Jeffery
-
 This script will delete all of the tweets in the specified account.
 You may need to hit the "more" button on the bottom of your twitter profile
 page every now and then as the script runs, this is due to a bug in twitter.
+
+You will need to get a consumer key and consumer secret token to use this
+script, you can do so by registering a twitter application at https://dev.twitter.com/apps
+
+@requirements: Python 2.5+, Tweepy (http://pypi.python.org/pypi/tweepy/1.7.1)
+@author: Dave Jeffery
 """
- 
-import twitter, urllib2
 
-def delete_tweet(api, status_id):
-    """Deletes tweet with matching status_id"""
-    api.DestroyStatus(status_id)
-    print "Deleted:", status_id
- 
-def batch_delete(username, password, batch_size=200):
-    """Fetches tweets in batches and calls delete_tweet on each one"""
-    api = twitter.Api(username, password)
-    api.SetCache(None) # Caching needs to be turned off
+import tweepy
+
+CONSUMER_KEY = 'XXX'
+CONSUMER_SECRET = 'XXX'
+
+def oauth_login(consumer_key, consumer_secret):
+    """Authenticate with twitter using OAuth"""
     
-    print "Deleting all tweets from", username
-    batch = 0
-    while True: # Rinse and repeat
-        tweets = api.GetUserTimeline(username, count=batch_size) # Get batch of tweets
-        if tweets:
-            batch += 1
-            print "\nProcessing batch", batch
-            for tweet in tweets:
-                delete_tweet(api, tweet.id)
-        elif not tweets:
-            print "\nNo tweets left... Done"
-            break
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth_url = auth.get_authorization_url()
+    
+    verify_code = raw_input("Authenticate at %s and then enter you verification code here > " % auth_url) 
+    auth.get_access_token(verify_code)
+    
+    return tweepy.API(auth)
 
-if __name__ == "__main__":      
-    batch_delete(username="user", password="pass")
+def batch_delete(api):
+    print "You are about to Delete all tweets from the account @%s." % api.verify_credentials().screen_name
+    print "Does this sound ok? There is no undo! Type yes to carry out this action."
+    do_delete = raw_input("> ")
+    if do_delete.lower() == 'yes':
+        for status in tweepy.Cursor(api.user_timeline).items():
+            api.destroy_status(status.id)
+            print "Deleted:", status.id
+
+if __name__ == "__main__":
+    api = oauth_login(CONSUMER_KEY, CONSUMER_SECRET)
+    print "Authenticated as: %s" % api.me().screen_name
+    
+    batch_delete(api)
