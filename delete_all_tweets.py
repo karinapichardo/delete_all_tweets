@@ -33,8 +33,11 @@ def batch_delete(api):
     do_delete = raw_input("> ")
     if do_delete.lower() == 'yes':
         for status in tweepy.Cursor(api.user_timeline).items():
-            api.destroy_status(status.id)
-            print "Deleted:", status.id
+            try:
+                api.destroy_status(status.id)
+                print "Deleted:", status.id
+            except:
+                print "Failed to delete:", status.id
 
 if __name__ == "__main__":
     api = oauth_login(CONSUMER_KEY, CONSUMER_SECRET)
