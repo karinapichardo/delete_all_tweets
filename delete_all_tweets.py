@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 """
+This script is forked from @vik-y. 
+I made a few changes to the orginal repository to make the code compatible and usable with python3.
+@author: karinapichardo
+
+-----------------------------------------------------------------------------
+
 This script is forked originally from Dave Jeffery. The original implementation
 was very slow and deleted around 2 tweets per second. Making it multithreaded I 
 am able to delete 30-50 tweets per second. 
@@ -31,7 +37,7 @@ access_secret = ""
 def deleteThread(api, objectId):
 	try:
 		api.destroy_status(objectId)
-		print "Deleted:", objectId
+		print ("Deleted:", objectId)
 	except:
 		print ("Failed to delete:", objectId)
 
@@ -55,7 +61,7 @@ def batch_delete(api):
             try:
                 #api.destroy_status(status.id)
                 #print "Deleted:", status.id
-                thread.start_new_thread( deleteThread, (api, status.id, ) )
+                _thread.start_new_thread( deleteThread, (api, status.id, ) )
             except:
                 print ("Failed to delete:", status.id)
 
