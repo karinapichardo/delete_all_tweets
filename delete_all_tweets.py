@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This script is forked from @vik-y. 
+This script is forked from Vikas Yadav, @vik-y. 
 I made a few changes to the orginal repository to make the code compatible and usable with python3.
 @author: karinapichardo
 
